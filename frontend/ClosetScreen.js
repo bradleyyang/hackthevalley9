@@ -64,8 +64,8 @@ const ClosetScreen = () => {
 
 const styles = StyleSheet.create({
   closetScreen: {
-    width: 393,
-    height: 852,
+    width: "100%",
+    height: "100%",
     paddingTop: 48,
     paddingBottom: 24,
     paddingLeft: 24,
@@ -151,17 +151,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#D9D9D9",
   },
   closetItems: {
+    display: "flex",
     alignSelf: "stretch",
-    height: 345,
-    paddingLeft: 8,
-    paddingRight: 8,
+    width: "345",
+    height: "345",
+    paddingLeft: 0,
+    paddingRight: 0,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
+    alignContent: "center",
+    rowGap: 24,
+    flexWrap: "wrap",
+    flexShrink: 0,
   },
   card: {
-    width: 160,
-    height: 160,
+    width: 168,
+    height: 168,
     padding: 24,
     backgroundColor: "white",
     borderRadius: 8,
@@ -173,8 +179,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   itemImageStandIn: {
-    width: 112,
-    height: 112,
+    width: 120,
+    height: 120,
     backgroundColor: "#D9D9D9",
   },
   bottomBar: {

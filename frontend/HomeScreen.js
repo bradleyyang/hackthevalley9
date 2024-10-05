@@ -1,15 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
-const BadgeCollection = () => {
-  // Define the icons array
+const HomeScreen = () => {
+  // Define the icons array directly in HomeScreen
   const icons = [
     { source: require("./assets/collection.png"), size: 48, borderRadius: 24 },
     { source: require("./assets/plus.png"), size: 48, borderRadius: 24 },
     { source: require("./assets/closet.png"), size: 48, borderRadius: 24 },
   ];
 
-  // IconButton Component
   const IconButton = ({ source, size, borderRadius }) => (
     <View
       style={[styles.iconButton, { width: size, height: size, borderRadius }]}
@@ -21,99 +20,109 @@ const BadgeCollection = () => {
   );
 
   return (
-    <View style={styles.collection}>
-      <View style={styles.badgeDisplay}>
-        {Array.from({ length: 15 }).map((_, index) => (
-          <View key={index} style={styles.badge}>
-            <View style={[styles.badgeBorder, getBadgeBorderColor(index)]} />
-            <View style={styles.badgeImageStandIn} />
+    <View style={styles.container}>
+      <View style={styles.heroTextAnimal}>
+        <View style={styles.heroText}>
+          <View style={styles.textWrapper}>
+            <Text style={styles.goodMorningText}>Good morning</Text>
+            <Text style={styles.nameText}>XXXXX!</Text>
           </View>
-        ))}
-      </View>
-      <View style={styles.bottomBar}>
-        {/* Icon Button Group Rendered Here */}
-        <View style={styles.iconButtonGroup}>
-          {icons.map((icon, index) => (
-            <IconButton key={index} {...icon} />
-          ))}
         </View>
+        <View style={styles.avatarBg}>
+          <View style={styles.avatarStandIn}></View>
+          <View style={styles.floorBehindThe}></View>
+        </View>
+      </View>
+      <View style={styles.floorResponsive}></View>
+
+      {/* Icon Button Group Rendered Directly Here */}
+      <View style={styles.iconButtonGroup}>
+        {icons.map((icon, index) => (
+          <IconButton key={index} {...icon} />
+        ))}
       </View>
     </View>
   );
 };
 
-// Function to get badge border color
-const getBadgeBorderColor = (index) => {
-  const colors = [
-    styles.badgeColor1.backgroundColor,
-    styles.badgeColor2.backgroundColor,
-    styles.badgeColor3.backgroundColor,
-    styles.badgeColor4.backgroundColor,
-    styles.badgeColor5.backgroundColor,
-  ];
-  return {
-    backgroundColor: colors[index % colors.length],
-  };
-};
-
 const styles = StyleSheet.create({
-  collection: {
-    width: 393,
-    height: 852,
-    paddingTop: 48,
-    paddingBottom: 24,
-    backgroundColor: "#F3EEE2",
+  container: {
+    height: "100%",
     flexDirection: "column",
-    justifyContent: "space-between",
     alignItems: "center",
-  },
-  badgeDisplay: {
     alignSelf: "stretch",
-    flex: 1,
-    paddingTop: 24,
-    paddingLeft: 24,
-    paddingRight: 24,
-    justifyContent: "flex-start", // Changed to ensure badges fill the area
-    alignItems: "flex-start",
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  badge: {
-    width: 96,
-    height: 96,
-    position: "relative",
-    backgroundColor: "white",
-    borderRadius: 48,
-    margin: 4,
-  },
-  badgeBorder: {
-    width: 96,
-    height: 96,
-    position: "absolute",
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 48,
-  },
-  badgeImageStandIn: {
-    width: 80,
-    height: 80,
-    position: "absolute",
-    left: 8,
-    top: 8,
-    backgroundColor: "#D9D9D9",
-    borderRadius: 9999,
-  },
-  bottomBar: {
-    width: 345,
     justifyContent: "space-between",
+    backgroundColor: "#F2EDE2", // Background color for the whole screen
+  },
+  heroTextAnimal: {
+    flexDirection: "column",
     alignItems: "center",
+    gap: 48,
+    paddingTop: 48,
+    alignSelf: "stretch",
+    width: "100%",
+    backgroundColor: "#ffffff",
+  },
+  heroText: {
+    paddingTop: "96",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 4,
+    position: "relative",
+  },
+  textWrapper: {
+    width: "fit-content", // Adjusted to fit text content
+    paddingTop: 80,
+  },
+  goodMorningText: {
+    fontFamily: "Caros-Bold",
+    fontWeight: "700",
+    color: "#F694C1",
+    fontSize: 45,
+  },
+  nameText: {
+    fontFamily: "Caros-Bold",
+    fontWeight: "700",
+    color: "#F694C1",
+    fontSize: 45,
+    textAlign: "center",
+  },
+  avatarBg: {
+    flexDirection: "column",
+    alignItems: "center",
+    marginLeft: -24,
+    marginRight: -24,
+    backgroundColor: "#ffffff",
+  },
+  avatarStandIn: {
+    width: 256,
+    height: 344,
+    backgroundColor: "#D9D9D9",
+    zIndex: 2,
+  },
+  floorBehindThe: {
+    position: "absolute", // Make floorBehindThe absolute
+    bottom: 0, // Align it to the bottom of the parent container
+    width: "100%",
+    height: 50,
+    backgroundColor: "#F3EEE2",
+    zIndex: 1, // Make sure it is behind the avatar
+  },
+  floorResponsive: {
+    flex: 1,
+    alignSelf: "stretch",
+    width: "100%",
+    backgroundColor: "#F3EEE2",
   },
   iconButtonGroup: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#F3EEE2",
+    display: "flex",
     width: "100%",
+    paddingLeft: 24,
+    paddingRight: 24,
     paddingBottom: 24,
   },
   iconButton: {
@@ -135,22 +144,6 @@ const styles = StyleSheet.create({
     height: "70%",
     aspectRatio: 1,
   },
-  // Badge colors defined here
-  badgeColor1: {
-    backgroundColor: "#A9DEF9",
-  },
-  badgeColor2: {
-    backgroundColor: "#D3F8E2",
-  },
-  badgeColor3: {
-    backgroundColor: "#EDE7B1",
-  },
-  badgeColor4: {
-    backgroundColor: "#E1E1E1",
-  },
-  badgeColor5: {
-    backgroundColor: "#F694C1",
-  },
 });
 
-export default BadgeCollection;
+export default HomeScreen;
