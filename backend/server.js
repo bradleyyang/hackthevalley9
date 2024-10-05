@@ -11,6 +11,7 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
+// Authentication routes
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
@@ -37,6 +38,10 @@ app.post('/users', async (req, res) => {
 });
 
 app.put('/users', async (req, res) => {
+    return res.status(400).send('Error 400: Please supply a username.')
+});
+
+app.delete('/users', async (req, res) => {
     return res.status(400).send('Error 400: Please supply a username.')
 });
 
@@ -94,15 +99,10 @@ app.post('/users/:username/:food', async (req, res) => {
 
 app.delete('/users/:username/:food', async (req, res) => {
     try {
-        if (!(req.body.hasOwnProperty('safeFood') && req.body.hasOwnProperty('tags'))) {
-            return res.status(400).send('No category provided for food');
-        }
         let deleteResult = await User.findOneAndUpdate(
             { username: req.params.username }, 
             { $pull: { foods: {
-                name: req.params.food,
-                tags: req.body['tags'],
-                safeFood: req.body['safeFood']
+                name: req.params.food
             } } },
             { new: true }
         );
