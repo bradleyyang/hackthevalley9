@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const LogEntry = require('./models/LogEntry');
 const axios = require('axios');
 
 const port = process.env.PORT || 8080
@@ -130,9 +131,28 @@ app.post('/users/:username/:food/eat', async (req, res) => {
             { stats: userInfo['stats']  },
             { new: true }
         );
+        const newLogEntry = new LogEntry({
+            username: req.params.username,
+            food: {
+                name: req.params.food,
+                tags: foodTags
+            }
+        })
+        await newLogEntry.save();
         res.send(postResult);
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Error eating food', error });
+    }
+});
+
+
+app.get('/users/:username/log', async (req, res) => {
+    try {
+        let logResults = await LogEntry.find({});
+        res.send(logResults);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Error getting log', error });
     }
 });
