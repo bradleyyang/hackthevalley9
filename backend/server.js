@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Food = require('./models/foods');
+const Food = require('./models/Food');
 const axios = require('axios');
 
 const port = process.env.PORT || 8080
