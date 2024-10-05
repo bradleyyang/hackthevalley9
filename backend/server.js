@@ -24,29 +24,38 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 
-
+// Error handling
 app.get('/users', async (req, res) => {
+    return res.status(400).send('Error 400: Please supply a username.')
+});
+
+app.post('/users', async (req, res) => {
+    return res.status(400).send('Error 400: Please supply a username.')
+});
+
+app.put('/users', async (req, res) => {
+    return res.status(400).send('Error 400: Please supply a username.')
+});
+
+
+
+
+// User routes
+
+app.get('/users/:username', async (req, res) => {
     try {
-        if(!req.query.hasOwnProperty('username')) {
-            return res.status(400).send('Error 400: Please supply a username.')
-        }
-        const user = await User.find({username: req.query['username']});
-        res.send(user[0]);
+        const user = await User.findOne({username: req.params.username});
+        res.send(user);
     } catch (error) {
         res.status(500).send(error.message);
     }
 });
 
-app.delete('/users', async (req, res) => {
-    const query = { username: req.body['username'] };
-    const deleteResult = await User.deleteOne(query);
-    res.send(deleteResult);
-});
-
-app.post('/users', async (req, res) => {
+app.post('/users/:username', async (req, res) => {
     try {
-        const { username, password, email, ageGroup } = req.body;
-        const newUser = new User({ username, password, email, ageGroup });
+        const username = req.params.username;
+        const { password, email, age } = req.body;
+        const newUser = new User({ username, password, email, age });
         const savedUser = await newUser.save();
         res.status(201).send(savedUser);
     } catch (error) {
@@ -54,3 +63,50 @@ app.post('/users', async (req, res) => {
         res.status(500).send({ message: 'Error creating user', error });
     }
 });
+
+
+// Food routes
+
+app.post('/users/:username/:food', async (req, res) => {
+    try {
+        if(!(req.body.hasOwnProperty('safeFood') && req.body.hasOwnProperty('tags'))) {
+            return res.status(400).send('No category provided for food');
+        }
+        let putResult = await User.findOneAndUpdate(
+            { username: req.params.username }, 
+            { $push: { foods: {
+                name: req.params.food,
+                tags: req.body['tags'],
+                safeFood: req.body['safeFood']
+            } } }, 
+            { new: true }
+        );
+        res.send(putResult);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Error modifying user', error });
+    }
+});
+
+
+app.delete('/users/:username/:food', async (req, res) => {
+    try {
+        if (!(req.body.hasOwnProperty('safeFood') && req.body.hasOwnProperty('tags'))) {
+            return res.status(400).send('No category provided for food');
+        }
+        let deleteResult = await User.findOneAndUpdate(
+            { username: req.params.username }, 
+            { $pull: { foods: {
+                name: req.params.food,
+                tags: req.body['tags'],
+                safeFood: req.body['safeFood']
+            } } }
+        );
+
+        res.send(deleteResult);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Error modifying user', error });
+    }
+});
+
