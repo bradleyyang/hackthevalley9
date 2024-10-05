@@ -103,7 +103,8 @@ app.delete('/users/:username/:food', async (req, res) => {
                 name: req.params.food,
                 tags: req.body['tags'],
                 safeFood: req.body['safeFood']
-            } } }
+            } } },
+            { new: true }
         );
 
         res.send(deleteResult);
