@@ -1,6 +1,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Food = require('./models/Food');
+const Badge = require('./models/Badge');
+const User = require('./models/User');
 const axios = require('axios');
 
 const port = process.env.PORT || 8080
@@ -26,6 +28,14 @@ mongoose.connect(process.env.MONGO_URI)
         console.log(error)
     })
 
+
+
+
+
+
+
+
+// Food routes
 app.get('/foods', async (req, res) => {
     try {
         const food = await Food.find({});
@@ -43,21 +53,24 @@ app.delete('/foods', async (req, res) => {
 
 
 app.put('/foods', async (req, res) => {
-    const filter = { name: "Orange" }; // Adjust this if necessary
+    const { name, type, isFearFood, isSafeFood } = req.body; // Extract data from the request body
 
-    // Options to create a new document if no documents match the filter
-    const options = { upsert: true };
+    const filter = { name: req.body.oldName }; // Match the document by its current name (e.g., "Orange")
+    const options = { upsert: true, new: true }; // Upsert creates if no match is found
 
     // Document to set/update
     const updateDoc = {
         $set: {
-            name: "Pineapple" // This is what the document will be updated/created as
+            name: name || "Pineapple", // Defaults to "Pineapple" if no name provided
+            type: type || "fruit", // Defaults to "fruit"
+            isFearFood: isFearFood || false,
+            isSafeFood: isSafeFood || false,
         },
     };
 
     try {
         const updateResult = await Food.updateOne(filter, updateDoc, options);
-        
+
         // Send appropriate response
         if (updateResult.matchedCount > 0) {
             res.send({ message: "Document updated", result: updateResult });
@@ -84,4 +97,47 @@ app.post('/foods', async (req, res) => {
         console.error(error);
         res.status(500).send({ message: 'Error creating food item', error });
     }
+});
+
+
+
+
+
+
+// Badges routes
+app.get('/badges', async (req, res) => {
+    try {
+        const badge = await Badge.find({});
+        res.send(badge);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+app.delete('/badges', async (req, res) => {
+    const query = { title: "Badge1" };
+    const deleteResult = await Badge.deleteOne(query);
+    res.send(deleteResult);
+});
+
+
+
+
+
+
+
+// User routes
+app.get('/users', async (req, res) => {
+    try {
+        const user = await User.find({});
+        res.send(user);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+app.delete('/users', async (req, res) => {
+    const query = { username: "Bradley" };
+    const deleteResult = await User.deleteOne(query);
+    res.send(deleteResult);
 });
