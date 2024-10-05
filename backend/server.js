@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 const authRoutes = require('./routes/auth');
+const {post} = require("axios");
 app.use('/api/auth', authRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
@@ -73,7 +74,7 @@ app.post('/users/:username', async (req, res) => {
 app.post('/users/:username/:food', async (req, res) => {
     try {
         if(!(req.body.hasOwnProperty('safeFood') && req.body.hasOwnProperty('tags'))) {
-            return res.status(400).send('No category provided for food');
+            return res.status(400).send('No safeFood or tags provided for food');
         }
         let putResult = await User.findOneAndUpdate(
             { username: req.params.username }, 
@@ -114,3 +115,24 @@ app.delete('/users/:username/:food', async (req, res) => {
     }
 });
 
+
+app.post('/users/:username/:food/eat', async (req, res) => {
+    try {
+        let userInfo = await User.findOne({ username: req.params.username });
+        let foodTags = userInfo['foods'].find(f => {
+            return f['name'] === req.params.food;
+        })['tags'];
+        foodTags.forEach(tag => {
+            userInfo['stats'][tag + 'Count']++;
+        });
+        let postResult = await User.findOneAndUpdate(
+            { username: req.params.username },
+            { stats: userInfo['stats']  },
+            { new: true }
+        );
+        res.send(postResult);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Error eating food', error });
+    }
+});

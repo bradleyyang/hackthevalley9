@@ -25,18 +25,28 @@ const userSchema = new mongoose.Schema({
       name: String,
       tags: {
         type: [String],
-        enum: ['Grains', 'Fruits', 'Vegetables', 'Proteins', 'Dairy']
+        enum: ['Grains', 'Fruits', 'Vegetables', 'Proteins', 'Dairy'],
+        default: []
       },
       safeFood: Boolean
     }],
     default: []
   },
   stats: {
-      GrainCount: Number,
-      FruitCount: Number,
-      VegetableCount: Number,
-      ProteinCount: Number,
+    type: {
+      GrainsCount: Number,
+      FruitsCount: Number,
+      VegetablesCount: Number,
+      ProteinsCount: Number,
       DairyCount: Number
+    },
+    default: {
+      GrainsCount: 0,
+      FruitsCount: 0,
+      VegetablesCount: 0,
+      ProteinsCount: 0,
+      DairyCount: 0
+    }
   }
 });
 
