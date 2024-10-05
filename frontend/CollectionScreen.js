@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "white",
     borderRadius: 48,
-    margin: 4,
+    margin: 9.5,
   },
   badgeBorder: {
     width: 96,
@@ -101,7 +101,9 @@ const styles = StyleSheet.create({
     left: 8,
     top: 8,
     backgroundColor: "#D9D9D9",
-    borderRadius: 9999,
+    borderRadius: 40, // Half of its size for circular shape
+    borderWidth: 1, // Inner border thickness
+    borderColor: "black", // Inner border color
   },
   bottomBar: {
     width: 345,
