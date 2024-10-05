@@ -25,23 +25,6 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 
-
-
-
-
-// User routes
-app.get('/users', async (req, res) => {
-    try {
-        if(!req.query.hasOwnProperty('username')) {
-            return res.status(400).send('Error 400: Please supply a username.')
-        }
-        const user = await User.find({username: req.query['username']});
-        res.send(user[0]);
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
-
 app.get('/users', async (req, res) => {
     try {
         if(!req.query.hasOwnProperty('username')) {
@@ -62,7 +45,8 @@ app.delete('/users', async (req, res) => {
 
 app.post('/users', async (req, res) => {
     try {
-        const newUser = new User({ username, password, email, ageGroup }) = req.body;
+        const { username, password, email, ageGroup } = req.body;
+        const newUser = new User({ username, password, email, ageGroup });
         const savedUser = await newUser.save();
         res.status(201).send(savedUser);
     } catch (error) {
