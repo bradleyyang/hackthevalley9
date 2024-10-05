@@ -129,15 +129,31 @@ app.delete('/badges', async (req, res) => {
 // User routes
 app.get('/users', async (req, res) => {
     try {
-        const user = await User.find({});
-        res.send(user);
+        if(!req.query.hasOwnProperty('username')) {
+            return res.status(400).send('Error 400: Please supply a username.')
+        }
+        const user = await User.find({username: req.query['username']});
+        res.send(user[0]);
     } catch (error) {
         res.status(500).send(error.message);
     }
 });
 
 app.delete('/users', async (req, res) => {
-    const query = { username: "Bradley" };
+    const query = { username: req.body['username'] };
     const deleteResult = await User.deleteOne(query);
     res.send(deleteResult);
+});
+
+app.post('/users', async (req, res) => {
+    const { username, password, email, ageGroup, safeFoods, fearFoods } = req.body;
+
+    try {
+        const newUser = new User({ username, password, email, ageGroup, safeFoods, fearFoods });
+        const savedUser = await newUser.save();
+        res.status(201).send(savedUser);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Error creating user', error });
+    }
 });
