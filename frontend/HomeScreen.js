@@ -2,6 +2,23 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 const HomeScreen = () => {
+  // Define the icons array directly in HomeScreen
+  const icons = [
+    { source: require("./assets/collection.png"), size: 48, borderRadius: 24 },
+    { source: require("./assets/plus.png"), size: 48, borderRadius: 24 },
+    { source: require("./assets/closet.png"), size: 48, borderRadius: 24 },
+  ];
+
+  const IconButton = ({ source, size, borderRadius }) => (
+    <View
+      style={[styles.iconButton, { width: size, height: size, borderRadius }]}
+    >
+      <View style={styles.iconContainer}>
+        <Image resizeMode="contain" source={source} style={styles.icon} />
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.heroTextAnimal}>
@@ -17,19 +34,12 @@ const HomeScreen = () => {
         </View>
       </View>
       <View style={styles.floorResponsive}></View>
-      <View style={styles.bottomBar}>
-        <View style={styles.imgWrapper}>
-          <Image
-            source={require("./assets/collection.png")}
-            style={styles.img}
-          />
-        </View>
-        <View style={styles.imgWrapper}>
-          <Image source={require("./assets/plus.png")} style={styles.img} />
-        </View>
-        <View style={styles.imgWrapper}>
-          <Image source={require("./assets/closet.png")} style={styles.img} />
-        </View>
+
+      {/* Icon Button Group Rendered Directly Here */}
+      <View style={styles.iconButtonGroup}>
+        {icons.map((icon, index) => (
+          <IconButton key={index} {...icon} />
+        ))}
       </View>
     </View>
   );
@@ -37,11 +47,11 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Use flex to fill available space
+    height: 810,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 24,
+    alignSelf: "stretch",
+    justifyContent: "space-between",
     backgroundColor: "#F2EDE2", // Background color for the whole screen
   },
   heroTextAnimal: {
@@ -67,13 +77,14 @@ const styles = StyleSheet.create({
     fontFamily: "Caros-Bold",
     fontWeight: "700",
     color: "#F694C1",
-    fontSize: 36,
+    fontSize: 40,
   },
   nameText: {
     fontFamily: "Caros-Bold",
     fontWeight: "700",
     color: "#F694C1",
-    fontSize: 36,
+    fontSize: 40,
+    textAlign: "center",
   },
   avatarBg: {
     flexDirection: "column",
@@ -86,40 +97,51 @@ const styles = StyleSheet.create({
     width: 256,
     height: 344,
     backgroundColor: "#D9D9D9",
+    zIndex: 2,
   },
   floorBehindThe: {
-    width: 393,
-    height: 48,
-    marginTop: -48,
-    backgroundColor: "#F2EDE2",
+    position: "absolute", // Make floorBehindThe absolute
+    bottom: 0, // Align it to the bottom of the parent container
+    width: 400,
+    height: 50,
+    backgroundColor: "#F3EEE2",
+    zIndex: 1, // Make sure it is behind the avatar
   },
   floorResponsive: {
-    flex: 1,
+    flexGrow: 1,
     alignSelf: "stretch",
     width: "100%",
-    backgroundColor: "#F2EDE2",
+    backgroundColor: "#F3EEE2",
   },
-  bottomBar: {
-    flexDirection: "row", // Arrange icons horizontally
-    alignItems: "center",
+  iconButtonGroup: {
+    flexDirection: "row",
     justifyContent: "space-between",
-    paddingBottom: 24,
-    width: "100%",
-  },
-  imgWrapper: {
-    width: 32,
-    height: 32,
     alignItems: "center",
+    backgroundColor: "#F3EEE2",
+    display: "flex",
+    width: "100%",
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingBottom: 24,
+  },
+  iconButton: {
     justifyContent: "center",
-    paddingVertical: 8,
-    backgroundColor: "#E4C1F9",
-    borderRadius: 16,
+    alignItems: "center",
     borderWidth: 1,
     borderColor: "#000",
+    backgroundColor: "#E4C1F9",
   },
-  img: {
-    width: 32, // Set the width of the images
-    height: 32, // Set the height of the images
+  iconContainer: {
+    display: "flex",
+    width: 32,
+    alignItems: "center",
+    overflow: "hidden",
+    justifyContent: "center",
+  },
+  icon: {
+    width: "70%",
+    height: "70%",
+    aspectRatio: 1,
   },
 });
 
