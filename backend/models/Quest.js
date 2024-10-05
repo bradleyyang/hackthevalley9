@@ -1,21 +1,17 @@
 const mongoose = require('mongoose');
 
-const foodSchema = new mongoose.Schema({
-  name: {
+const questSchema = new mongoose.Schema({
+  title: {
     type: String,
     required: true,
-    unique: true,
   },
-  type: {
+  description: String,
+  tasks: [{ // Array of tasks to complete
     type: String,
-    enum: ['fruit', 'vegetable', 'protein', 'grain', 'dairy', 'snack'],
     required: true,
-  },
-  isFearFood: {
-    type: Boolean,
-    default: false,
-  },
-  isSafeFood: {
+  }],
+  rewards: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Badge' }], // Array of badge IDs as rewards
+  isCompleted: {
     type: Boolean,
     default: false,
   },
@@ -30,11 +26,11 @@ const foodSchema = new mongoose.Schema({
 });
 
 // Update the updatedAt field before saving a document
-foodSchema.pre('save', function (next) {
+questSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
-const Food = mongoose.model('Food', foodSchema);
+const Quest = mongoose.model('Quest', questSchema);
 
-module.exports = Food;
+module.exports = Quest;

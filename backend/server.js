@@ -11,7 +11,7 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
-
+// STILL NEED TO ADD MORE ROUTES FOR SCHEMAS OTHER THAN FOODS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
@@ -25,14 +25,6 @@ mongoose.connect(process.env.MONGO_URI)
     .catch((error) => {
         console.log(error)
     })
-
-
-// Routes
-// app.post('/foods', async (req, res) => {
-//     const food = new Food(req.body);
-//     await food.save();
-//     res.send(food);
-// });
 
 app.get('/foods', async (req, res) => {
     try {
