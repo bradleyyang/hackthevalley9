@@ -37,6 +37,11 @@ export default function App() {
           component={ClosetScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
