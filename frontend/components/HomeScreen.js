@@ -1,7 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
+
+
+  const { userDetails } = route.params;
+
+
   // Define the icons array directly in HomeScreen
   const icons = [
     {
@@ -37,11 +42,14 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+
       <View style={styles.heroTextAnimal}>
         <View style={styles.heroText}>
           <View style={styles.textWrapper}>
             <Text style={styles.goodMorningText}>Good morning</Text>
-            <Text style={styles.nameText}>XXXXX!</Text>
+            <Text style={styles.nameText}>{userDetails.username}!</Text>
+            <Text>Email: {userDetails.email}</Text>
+            <Text>Age: {userDetails.age}</Text>
           </View>
         </View>
         <View style={styles.avatarBg}>

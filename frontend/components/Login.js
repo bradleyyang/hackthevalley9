@@ -19,13 +19,19 @@ const Login = () => {
                 password,
             });
 
-            const token = response.data.token;
+
 
             Alert.alert('Login Successful', `Welcome back, ${username}!`);
 
-            console.log('JWT Token:', token);
 
-            navigation.navigate('Home');
+
+            const userResponse = await axios.get(`http://localhost:8080/users/${username}`);
+
+            const userDetails = userResponse.data; 
+
+
+            navigation.navigate('Home', { userDetails });
+            console.log(userDetails);
 
 
         } catch (error) {
@@ -39,12 +45,14 @@ const Login = () => {
             <Text style={styles.title}>Login</Text>
             <TextInput
                 style={styles.input}
+                autoCapitalize="none"
                 placeholder="Username"
                 value={username}
                 onChangeText={setUsername}
             />
             <TextInput
                 style={styles.input}
+                autoCapitalize="none"
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}

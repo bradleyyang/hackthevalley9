@@ -38,6 +38,7 @@ const Register = () => {
             <Text style={styles.title}>Register</Text>
             <TextInput
                 style={styles.input}
+                autoCapitalize="none"
                 placeholder="Username"
                 value={username}
                 onChangeText={setUsername}
@@ -52,6 +53,7 @@ const Register = () => {
             />
             <TextInput
                 style={styles.input}
+                autoCapitalize="none"
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}

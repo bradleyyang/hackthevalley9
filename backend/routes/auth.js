@@ -25,7 +25,7 @@ router.get('/protected', authMiddleware, (req, res) => {
 router.post('/register', async (req, res) => {
   const { username, email, password, age } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
-    
+
   const newUser = new User({ username, email, password: hashedPassword, age });
   try {
     await newUser.save();
@@ -46,13 +46,25 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-    const token = jwt.sign({ 
-      id: user._id, 
-      username: user.username, 
-      email: user.email, 
-      age: user.age 
+    const token = jwt.sign({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      age: user.age
     }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ token });
+
+
+    res.json({
+      token,
+      user: {
+        username: user.username,
+        email: user.email,
+        age: user.age,
+        foods: user.foods,
+        stats: user.stats
+      }
+    });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
