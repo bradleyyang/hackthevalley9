@@ -1,22 +1,38 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   // Define the icons array directly in HomeScreen
   const icons = [
-    { source: require("./assets/collection.png"), size: 48, borderRadius: 24 },
-    { source: require("./assets/plus.png"), size: 48, borderRadius: 24 },
-    { source: require("./assets/closet.png"), size: 48, borderRadius: 24 },
+    {
+      source: require("./assets/collection.png"),
+      size: 48,
+      borderRadius: 24,
+      onPress: () => navigation.navigate("Collection"), // Navigate to CollectionScreen
+    },
+    {
+      source: require("./assets/plus.png"),
+      size: 48,
+      borderRadius: 24,
+      onPress: () => navigation.navigate("LogFood"), // Navigate to LogFoodScreen
+    },
+    {
+      source: require("./assets/closet.png"),
+      size: 48,
+      borderRadius: 24,
+      onPress: () => navigation.navigate("Closet"), // Navigate to ClosetScreen
+    },
   ];
 
-  const IconButton = ({ source, size, borderRadius }) => (
-    <View
+  const IconButton = ({ source, size, borderRadius, onPress }) => (
+    <TouchableOpacity
       style={[styles.iconButton, { width: size, height: size, borderRadius }]}
+      onPress={onPress} // Trigger onPress when the button is clicked
     >
       <View style={styles.iconContainer}>
         <Image resizeMode="contain" source={source} style={styles.icon} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
