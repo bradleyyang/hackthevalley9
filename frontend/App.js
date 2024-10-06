@@ -17,11 +17,26 @@ export default function App() {
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="LogFood" component={LogFoodScreen} />
-        <Stack.Screen name="Collection" component={CollectionScreen} />
-        <Stack.Screen name="Closet" component={ClosetScreen} />
-        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LogFood"
+          component={LogFoodScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Collection"
+          component={CollectionScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Closet"
+          component={ClosetScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

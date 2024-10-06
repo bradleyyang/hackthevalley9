@@ -4,9 +4,9 @@ import { View, Text, StyleSheet, Image } from "react-native";
 const BadgeCollection = () => {
   // Define the icons array
   const icons = [
-    { source: require("./assets/collection.png"), size: 48, borderRadius: 24 },
-    { source: require("./assets/plus.png"), size: 48, borderRadius: 24 },
-    { source: require("./assets/closet.png"), size: 48, borderRadius: 24 },
+    { source: require("./images/collection.png"), size: 48, borderRadius: 24 },
+    { source: require("./images/plus.png"), size: 48, borderRadius: 24 },
+    { source: require("./images/closet.png"), size: 48, borderRadius: 24 },
   ];
 
   // IconButton Component
