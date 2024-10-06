@@ -1,3 +1,5 @@
+//TODO(2): after log food is submitted, change icons to FB.png and NF1.png
+//TODO(3): make NF1 clickable, and when clucked, display/navigate to BadgeDesc
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook

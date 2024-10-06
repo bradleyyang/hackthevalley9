@@ -45,7 +45,10 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.avatarBg}>
-          <View style={styles.avatarStandIn}></View>
+          <Image
+            source={require("./images/penguinbase.png")} // Load penguin.png as the avatar
+            style={styles.avatarStandIn}
+          />
           <View style={styles.floorBehindThe}></View>
         </View>
       </View>
@@ -113,8 +116,7 @@ const styles = StyleSheet.create({
   avatarStandIn: {
     width: 256,
     height: 344,
-    backgroundColor: "#D9D9D9",
-    zIndex: 2,
+    resizeMode: "contain", // Ensure the image maintains aspect ratio
   },
   floorBehindThe: {
     position: "absolute", // Make floorBehindThe absolute
@@ -122,7 +124,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     backgroundColor: "#F3EEE2",
-    zIndex: 1, // Make sure it is behind the avatar
   },
   floorResponsive: {
     flex: 1,

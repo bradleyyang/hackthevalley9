@@ -1,3 +1,7 @@
+//TODO (general): gray out everything initialy (change images to crayscale)
+//TODO(4): once food submitted, change toque to be coloured
+//TODO(5): data persistence for avatar on home screen with toque
+
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook

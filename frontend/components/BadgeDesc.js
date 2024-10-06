@@ -1,3 +1,5 @@
+//TODO(general): add NFMain, NF1-4 to display
+
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";

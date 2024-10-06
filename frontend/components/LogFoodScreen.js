@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,20 +8,22 @@ import {
   Image,
 } from "react-native";
 import { dbRequest } from "../utils/dbRequest";
-import {useNavigation} from "@react-navigation/native"; // Import the useNavigation hook
-const username = 'rayc'
+import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook
+import Congrats from "./Congrats";
+const username = "rayc";
 
 function LogFoodScreen() {
   const navigation = useNavigation(); // Initialize navigation
   const [food, setFood] = useState("");
-  const [successVisible, setSuccess] = useState(false)
+  const [successVisible, setSuccess] = useState(false);
   const onSubmitPress = async (e) => {
     e.preventDefault();
     await dbRequest("post", `/users/${username}/${food}/eat`);
     setSuccess(true);
-    setFood('');
-    await new Promise(r => setTimeout(r, 5000));
+    setFood("");
+    await new Promise((r) => setTimeout(r, 5000));
     setSuccess(false);
+    //TODO(1): navigation.navigate(Congrats); (show congrats - then exit out of congrats, go back to main menu from log screen)
   };
 
   return (
@@ -31,12 +33,19 @@ function LogFoodScreen() {
           <Text style={styles.title}>Log a food!</Text>
         </View>
         <View style={styles.frame29}>
-          <TextInput style={styles.textInputField} onChangeText={setFood} value={food} placeholder={'Enter a food...'}
-                     placeholderTextColor={'#BBBBBB'}/>
+          <TextInput
+            style={styles.textInputField}
+            onChangeText={setFood}
+            value={food}
+            placeholder={"Enter a food..."}
+            placeholderTextColor={"#BBBBBB"}
+          />
           <TouchableOpacity style={styles.buttonText} onPress={onSubmitPress}>
             <Text style={styles.buttonLabel}>submit</Text>
           </TouchableOpacity>
-          <Text style={{display: successVisible ? 'flex' : 'none'}}>Food logged!</Text>
+          <Text style={{ display: successVisible ? "flex" : "none" }}>
+            Food logged!
+          </Text>
         </View>
       </View>
       <View style={styles.bottomBar}>
