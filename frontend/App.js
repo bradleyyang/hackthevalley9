@@ -8,6 +8,7 @@ import HomeScreen from "./HomeScreen";
 import ClosetScreen from "./ClosetScreen";
 import CollectionScreen from "./CollectionScreen";
 import LogFoodScreen from "./LogFoodScreen";
+import Register from "./components/Register";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ export default function App() {
         <Stack.Screen name="LogFood" component={LogFoodScreen} />
         <Stack.Screen name="Collection" component={CollectionScreen} />
         <Stack.Screen name="Closet" component={ClosetScreen} />
+        <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>
     </NavigationContainer>
   );
