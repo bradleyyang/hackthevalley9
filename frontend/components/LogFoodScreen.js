@@ -14,10 +14,14 @@ const username = 'rayc'
 function LogFoodScreen() {
   const navigation = useNavigation(); // Initialize navigation
   const [food, setFood] = useState("");
+  const [successVisible, setSuccess] = useState(false)
   const onSubmitPress = async (e) => {
     e.preventDefault();
-    let result = await dbRequest("post", `/users/${username}/${food}/eat`);
-    console.log(result);
+    await dbRequest("post", `/users/${username}/${food}/eat`);
+    setSuccess(true);
+    setFood('');
+    await new Promise(r => setTimeout(r, 5000));
+    setSuccess(false);
   };
 
   return (
@@ -32,6 +36,7 @@ function LogFoodScreen() {
           <TouchableOpacity style={styles.buttonText} onPress={onSubmitPress}>
             <Text style={styles.buttonLabel}>submit</Text>
           </TouchableOpacity>
+          <Text style={{display: successVisible ? 'flex' : 'none'}}>Food logged!</Text>
         </View>
       </View>
       <View style={styles.bottomBar}>
