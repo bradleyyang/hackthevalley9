@@ -13,7 +13,7 @@ const logEntrySchema = new mongoose.Schema({
             },
             tags: {
                 type: [String],
-                enum: ['Grains', 'Fruits', 'Vegetables', 'Proteins', 'Dairy'],
+                enum: ['Grains', 'Fruits', 'Vegetables', 'Proteins', 'Dairy', 'Fats'],
                 required: true
             },
         },
