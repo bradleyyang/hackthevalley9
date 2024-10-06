@@ -20,7 +20,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
-      <Stack.Navigator initialRouteName="LandingPage">
+      <Stack.Navigator initialRouteName="Closet">
         <Stack.Screen
           name="Home"
           component={HomeScreen}

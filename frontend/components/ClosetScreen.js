@@ -1,9 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook
 
 const ClosetScreen = () => {
   const navigation = useNavigation();
+
+  // State to manage the current avatar image
+  const [avatarImage, setAvatarImage] = useState(
+    require("./images/penguinbase.png")
+  );
+
+  // Define the closet items array and corresponding avatar images
+  const closetItems = [
+    {
+      image: require("./images/toque.png"),
+      avatar: require("./images/penguintoque.png"),
+    },
+    {
+      image: require("./images/bandana.png"),
+      avatar: require("./images/penguinbandana.png"),
+    },
+    {
+      image: require("./images/bow.png"),
+      avatar: require("./images/penguinbow.png"),
+    },
+    {
+      image: require("./images/vest.png"),
+      avatar: require("./images/penguinvest.png"),
+    },
+  ];
 
   return (
     <View style={styles.closetScreen}>
@@ -12,10 +37,16 @@ const ClosetScreen = () => {
         {/* Undo and Redo Buttons */}
         <View style={styles.undoRedo}>
           <View style={styles.button}>
-            <View style={styles.vectorUndo}></View>
+            <Image
+              source={require("./images/undo.png")} // Load undo.png
+              style={styles.vectorUndo}
+            />
           </View>
           <View style={styles.button}>
-            <View style={styles.vectorRedo}></View>
+            <Image
+              source={require("./images/redo.png")} // Load redo.png
+              style={styles.vectorRedo}
+            />
           </View>
         </View>
 
@@ -24,29 +55,32 @@ const ClosetScreen = () => {
           <View style={styles.unlockContent}>
             <Text style={styles.unlockText}>12</Text>
             <View style={styles.unlockIcon}>
-              <View style={styles.vector}></View>
+              <Image
+                source={require("./images/unlock.png")} // Load unlock.png
+                style={styles.vector}
+              />
             </View>
           </View>
         </View>
       </View>
 
-      {/* Avatar Placeholder */}
-      <View style={styles.avatarStandIn}></View>
+      {/* Avatar Placeholder with avatarImage state */}
+      <Image
+        source={avatarImage} // Use the current avatar image from state
+        style={styles.avatarStandIn}
+      />
 
       {/* Closet Items Layout */}
       <View style={styles.closetItems}>
-        <View style={styles.card}>
-          <View style={styles.itemImageStandIn}></View>
-        </View>
-        <View style={styles.card}>
-          <View style={styles.itemImageStandIn}></View>
-        </View>
-        <View style={styles.card}>
-          <View style={styles.itemImageStandIn}></View>
-        </View>
-        <View style={styles.card}>
-          <View style={styles.itemImageStandIn}></View>
-        </View>
+        {closetItems.map((item, index) => (
+          <TouchableOpacity
+            style={styles.card}
+            key={index}
+            onPress={() => setAvatarImage(item.avatar)} // Update avatar on press
+          >
+            <Image source={item.image} style={styles.itemImageStandIn} />
+          </TouchableOpacity>
+        ))}
       </View>
 
       {/* Bottom Bar with Cancel Button */}
@@ -106,12 +140,10 @@ const styles = StyleSheet.create({
   vectorUndo: {
     width: 16.69,
     height: 16,
-    backgroundColor: "white",
   },
   vectorRedo: {
     width: 16.71,
     height: 16,
-    backgroundColor: "white",
   },
   unlocks: {
     width: 61,
@@ -149,18 +181,17 @@ const styles = StyleSheet.create({
     width: 13.33,
     height: 16,
     position: "absolute",
-    backgroundColor: "black",
   },
   avatarStandIn: {
     width: 224,
     height: 296,
-    backgroundColor: "#D9D9D9",
+    resizeMode: "contain", // Ensure the image maintains aspect ratio
   },
   closetItems: {
     display: "flex",
     alignSelf: "stretch",
-    width: "345",
-    height: "345",
+    width: 345,
+    height: 345,
     paddingLeft: 0,
     paddingRight: 0,
     flexDirection: "row",
@@ -187,7 +218,7 @@ const styles = StyleSheet.create({
   itemImageStandIn: {
     width: 120,
     height: 120,
-    backgroundColor: "#D9D9D9",
+    resizeMode: "contain", // Ensure the image maintains aspect ratio
   },
   bottomBar: {
     alignSelf: "stretch",
