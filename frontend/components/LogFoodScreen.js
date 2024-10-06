@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {
   View,
   Text,
@@ -8,16 +8,18 @@ import {
   Image,
 } from "react-native";
 import { dbRequest } from "../utils/dbRequest";
-import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook
+import {useNavigation} from "@react-navigation/native"; // Import the useNavigation hook
+const username = 'rayc'
 
 function LogFoodScreen() {
   const navigation = useNavigation(); // Initialize navigation
   const [food, setFood] = useState("");
   const onSubmitPress = async (e) => {
     e.preventDefault();
-    let result = await dbRequest("post", `/users/rayc/${food}/eat`);
+    let result = await dbRequest("post", `/users/${username}/${food}/eat`);
     console.log(result);
   };
+
   return (
     <View style={styles.overlay}>
       <View style={styles.content}>
@@ -25,12 +27,8 @@ function LogFoodScreen() {
           <Text style={styles.title}>Log a food!</Text>
         </View>
         <View style={styles.frame29}>
-          <TextInput
-            style={styles.textInputField}
-            onChangeText={setFood}
-            value={food}
-            placeholder={"enter a food..."}
-          />
+          <TextInput style={styles.textInputField} onChangeText={setFood} value={food} placeholder={'Enter a food...'}
+                     placeholderTextColor={'#BBBBBB'}/>
           <TouchableOpacity style={styles.buttonText} onPress={onSubmitPress}>
             <Text style={styles.buttonLabel}>submit</Text>
           </TouchableOpacity>
