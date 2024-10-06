@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   View,
   Text,
@@ -7,15 +7,28 @@ import {
   StyleSheet,
 } from "react-native";
 import {dbRequest} from "../utils/dbRequest";
+import {Dropdown} from "react-native-element-dropdown";
+
+let data = [];
+const username = 'rayc'
 
 
 function LogFoodScreen() {
   const [food, setFood] = useState('');
   const onSubmitPress = async (e) => {
     e.preventDefault();
-    let result = await dbRequest('post', `/users/rayc/${food}/eat`);
+    let result = await dbRequest('post', `/users/${username}/${food}/eat`);
     console.log(result);
   };
+  useEffect(() => {
+    async function reloadOptions() {
+      let result = await dbRequest('get', `/users/${username}`);
+      data = result['foods'].map(food => {
+        return {value: food['name']}
+      });
+    }
+    reloadOptions();
+  },[]);
   return (
     <View style={styles.overlay}>
       <View style={styles.content}>
@@ -23,7 +36,8 @@ function LogFoodScreen() {
           <Text style={styles.title}>Log a food!</Text>
         </View>
         <View style={styles.frame29}>
-          <TextInput style={styles.textInputField} onChangeText={setFood} value={food} placeholder={'enter a food...'}/>
+          <Dropdown style={styles.textInputField} placeholder={'enter a food...'} placeholderTextColor={'#BBBBBB'}
+                    data={data} labelField={'value'} onChange={item => setFood(item)} valueField={'value'}/>
           <TouchableOpacity style={styles.buttonText} onPress={onSubmitPress}>
             <Text style={styles.buttonLabel}>submit</Text>
           </TouchableOpacity>
