@@ -9,10 +9,11 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [age, setAge] = useState(0);
 
+    const navigation = useNavigation();
     
     const handleSubmit = async () => {
 
-        const navigation = useNavigation();
+        
 
         try {
             const response = await axios.post('http://localhost:8080/api/auth/register', {
