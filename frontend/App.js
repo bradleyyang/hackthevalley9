@@ -1,17 +1,27 @@
 // App.js
 import React from "react";
 import { StyleSheet, View, StatusBar } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
 import HomeScreen from "./HomeScreen";
 import ClosetScreen from "./ClosetScreen";
 import CollectionScreen from "./CollectionScreen";
 import LogFoodScreen from "./LogFoodScreen";
 
+const Stack = createStackNavigator();
+
 export default function App() {
   return (
-    <View style={styles.container}>
+    <NavigationContainer>
       <StatusBar barStyle="dark-content" />
-      <LogFoodScreen />
-    </View>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="LogFood" component={LogFoodScreen} />
+        <Stack.Screen name="Collection" component={CollectionScreen} />
+        <Stack.Screen name="Closet" component={ClosetScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
