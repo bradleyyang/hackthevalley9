@@ -1,40 +1,42 @@
+// Login.js
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
-const Register = ({navigation}) => {
+const Login = () => {
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [age, setAge] = useState(0);
 
-    
-    const handleSubmit = async () => {
 
-        const navigation = useNavigation();
+    const navigation = useNavigation();
 
+    const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/register', {
+            const response = await axios.post('http://localhost:8080/api/auth/login', {
                 username,
-                email,
                 password,
-                age,
             });
 
+            const token = response.data.token;
 
-            Alert.alert('Registration Successful', `Welcome, ${username}!`);
+            Alert.alert('Login Successful', `Welcome back, ${username}!`);
 
-            navigation.goBack();
+            console.log('JWT Token:', token);
+
+            navigation.navigate('Home');
+
+
         } catch (error) {
-            Alert.alert('An error occurred');
+            Alert.alert('An error occurred', 'Please check your username and password.');
             console.log(error);
         }
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Register</Text>
+            <Text style={styles.title}>Login</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Username"
@@ -43,28 +45,13 @@ const Register = ({navigation}) => {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Age"
-                value={age}
-                onChangeText={setAge}
-                keyboardType="numeric" 
-            />
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Submit</Text>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
         </View>
     );
@@ -102,4 +89,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Register;
+export default Login;
