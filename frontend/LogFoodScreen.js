@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   View,
   Text,
@@ -6,8 +6,16 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import {dbRequest} from "./dbRequest";
 
-const LogFoodScreen = () => {
+
+function LogFoodScreen() {
+  const [food, setFood] = useState('');
+  const onSubmitPress = async (e) => {
+    e.preventDefault();
+    let result = await dbRequest('post', `/users/rayc/${food}/eat`);
+    console.log(result);
+  };
   return (
     <View style={styles.overlay}>
       <View style={styles.content}>
@@ -15,10 +23,8 @@ const LogFoodScreen = () => {
           <Text style={styles.title}>Log a food!</Text>
         </View>
         <View style={styles.frame29}>
-          <View style={styles.textInputField}>
-            <Text style={styles.inputText}>enter a food...</Text>
-          </View>
-          <TouchableOpacity style={styles.buttonText}>
+          <TextInput style={styles.textInputField} onChangeText={setFood} value={food} placeholder={'enter a food...'}/>
+          <TouchableOpacity style={styles.buttonText} onPress={onSubmitPress}>
             <Text style={styles.buttonLabel}>submit</Text>
           </TouchableOpacity>
         </View>
