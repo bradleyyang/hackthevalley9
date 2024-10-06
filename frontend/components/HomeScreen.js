@@ -5,19 +5,19 @@ const HomeScreen = ({ navigation }) => {
   // Define the icons array directly in HomeScreen
   const icons = [
     {
-      source: require("./assets/collection.png"),
+      source: require("./images/collection.png"),
       size: 48,
       borderRadius: 24,
       onPress: () => navigation.navigate("Collection"), // Navigate to CollectionScreen
     },
     {
-      source: require("./assets/plus.png"),
+      source: require("./images/plus.png"),
       size: 48,
       borderRadius: 24,
       onPress: () => navigation.navigate("LogFood"), // Navigate to LogFoodScreen
     },
     {
-      source: require("./assets/closet.png"),
+      source: require("./images/closet.png"),
       size: 48,
       borderRadius: 24,
       onPress: () => navigation.navigate("Closet"), // Navigate to ClosetScreen
