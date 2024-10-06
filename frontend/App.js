@@ -9,6 +9,7 @@ import ClosetScreen from "./components/ClosetScreen";
 import CollectionScreen from "./components/CollectionScreen";
 import LogFoodScreen from "./components/LogFoodScreen";
 import Register from "./components/Register";
+import BadgeDesc from "./components/BadgeDesc";
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="BadgeDesc">
         <Stack.Screen
           name="Home"
           component={HomeScreen}
@@ -40,6 +41,11 @@ export default function App() {
         <Stack.Screen
           name="Register"
           component={Register}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BadgeDesc"
+          component={BadgeDesc}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
