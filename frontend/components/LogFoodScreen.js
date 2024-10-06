@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import {dbRequest} from "./dbRequest";
+import {dbRequest} from "../utils/dbRequest";
 
 
 function LogFoodScreen() {
