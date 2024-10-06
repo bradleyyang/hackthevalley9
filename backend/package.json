@@ -19,7 +19,8 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.9.0",
-    "mongoose": "^8.7.0"
+    "mongoose": "^8.7.0",
+    "openai": "^4.67.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

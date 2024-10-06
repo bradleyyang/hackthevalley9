@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import {
   View,
   Text,
@@ -6,25 +7,53 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Animated,
 } from "react-native";
 import { dbRequest } from "../utils/dbRequest";
 import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook
-import Congrats from "./Congrats";
-const username = "rayc";
 
-function LogFoodScreen() {
+
+
+
+
+
+
+
+
+
+
+const LogFoodScreen = ({ route }) => {
+
+  const { userDetails } = route.params;
+
+  console.log("lkdfjslkfsdkljflkdsfjklds", userDetails.username);
   const navigation = useNavigation(); // Initialize navigation
   const [food, setFood] = useState("");
   const [successVisible, setSuccess] = useState(false);
-  const onSubmitPress = async (e) => {
-    e.preventDefault();
-    await dbRequest("post", `/users/${username}/${food}/eat`);
+
+  const onSubmitPress = async () => {
     setSuccess(true);
     setFood("");
-    await new Promise((r) => setTimeout(r, 5000));
-    setSuccess(false);
-    //TODO(1): navigation.navigate(Congrats); (show congrats - then exit out of congrats, go back to main menu from log screen)
+
+    console.log(userDetails.username);
+    
+    try {
+      const response = await axios.put('http://localhost:8080/logfood', {
+        "username": userDetails.username,
+      });
+      console.log('Updated user:', response.data);
+
+
+    } catch (error) {
+      console.error('Error updating user:', error);
+
+    }
+
+
+
   };
+
+ 
 
   return (
     <View style={styles.overlay}>
@@ -43,9 +72,11 @@ function LogFoodScreen() {
           <TouchableOpacity style={styles.buttonText} onPress={onSubmitPress}>
             <Text style={styles.buttonLabel}>submit</Text>
           </TouchableOpacity>
-          <Text style={{ display: successVisible ? "flex" : "none" }}>
-            Food logged!
-          </Text>
+          {successVisible && (
+            <View>
+              <Text>Food logged!</Text>
+            </View>
+          )}
         </View>
       </View>
       <View style={styles.bottomBar}>

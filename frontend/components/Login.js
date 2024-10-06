@@ -1,5 +1,3 @@
-// Login.js
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +6,6 @@ import axios from 'axios';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
 
     const navigation = useNavigation();
 
@@ -20,23 +17,21 @@ const Login = () => {
             });
 
 
-
-            Alert.alert('Login Successful', `Welcome back, ${username}!`);
-
-
-
             const userResponse = await axios.get(`http://localhost:8080/users/${username}`);
-
             const userDetails = userResponse.data; 
-
 
             navigation.navigate('Home', { userDetails });
             console.log(userDetails);
-
+            
+            setUsername('');
+            setPassword('');
 
         } catch (error) {
             Alert.alert('An error occurred', 'Please check your username and password.');
             console.log(error);
+
+            setUsername('');
+            setPassword('');
         }
     };
 
@@ -61,6 +56,12 @@ const Login = () => {
             <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.backButton}
+                onPress={() => { navigation.goBack() }}
+            >
+                <Text style={styles.backButtonText}>Back</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -70,29 +71,51 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 16,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#FFF7E7', // Light peach background
     },
     title: {
-        fontSize: 24,
+        fontSize: 30, // Larger title for a playful feel
         marginBottom: 24,
         textAlign: 'center',
+        color: '#FF6F61', // Warm coral color
+        fontWeight: 'bold',
     },
     input: {
         height: 50,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        paddingHorizontal: 10,
+        borderColor: '#FFB6C1', // Light pink border
+        borderWidth: 2,
+        borderRadius: 10,
+        paddingHorizontal: 15,
         marginBottom: 16,
+        backgroundColor: '#FFFFFF', // White background for inputs
     },
     button: {
-        backgroundColor: '#007BFF',
+        backgroundColor: '#FF6F61', // Coral color for button
         padding: 15,
-        borderRadius: 5,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3.5,
+        elevation: 5, // Add some elevation for a raised effect
+        marginBottom: 20,
     },
     buttonText: {
         color: '#FFFFFF',
         textAlign: 'center',
+        fontSize: 18, // Slightly larger font size for button text
+    },
+    backButton: {
+        backgroundColor: 'lightcoral', // Light red color for back button
+        padding: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    backButtonText: {
+        color: 'white',
         fontSize: 16,
     },
 });

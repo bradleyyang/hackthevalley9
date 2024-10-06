@@ -1,11 +1,13 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import axios from "axios";
 
 const HomeScreen = ({ navigation, route }) => {
 
-
   const { userDetails } = route.params;
+  const username = userDetails.username;
 
+  console.log("fldksjfklsdjklfdsjklfjdsklfjlkds jflkdsjflkdsjf ", username);
 
   // Define the icons array directly in HomeScreen
   const icons = [
@@ -19,7 +21,7 @@ const HomeScreen = ({ navigation, route }) => {
       source: require("./images/plus.png"),
       size: 48,
       borderRadius: 24,
-      onPress: () => navigation.navigate("LogFood"), // Navigate to LogFoodScreen
+      onPress: () => navigation.navigate("LogFood", {userDetails} ), // Navigate to LogFoodScreen
     },
     {
       source: require("./images/closet.png"),
@@ -28,6 +30,65 @@ const HomeScreen = ({ navigation, route }) => {
       onPress: () => navigation.navigate("Closet"), // Navigate to ClosetScreen
     },
   ];
+
+
+
+
+  const [explorerCount, setExplorerCount] = useState(0);
+  const [foodieCount, setFoodieCount] = useState(0);
+  const [masterChefCount, setMasterChefCount] = useState(0);
+  const [healthyEaterCount, setHealthyEaterCount] = useState(0);
+  const [foodConnoisseurCount, setFoodConnoisseurCount] = useState(0);
+  const [error, setError] = useState(null);
+
+  // Function to call your API
+  const fetchData = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/badges', {
+        "username": userDetails.username,
+      });
+
+      // Assuming response.data is an object with badge counts
+      const badgeData = response.data;
+
+      console.log(badgeData);
+
+      // Set the counts for each badge
+      setExplorerCount(badgeData.explorer || 0);
+      setFoodieCount(badgeData.foodie || 0);
+      setMasterChefCount(badgeData.masterChef || 0);
+      setHealthyEaterCount(badgeData.healthyEater || 0);
+      setFoodConnoisseurCount(badgeData.foodConnoisseur || 0);
+
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError('Error fetching data');
+    }
+  };
+
+  useEffect(() => {
+    // Call the API immediately when the component mounts
+    fetchData();
+
+    // Set up the interval to call the API periodically
+    const intervalId = setInterval(fetchData, 5000); // Call every 5 seconds
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [userDetails.username]);
+
+  const badges = [
+    { name: 'Explorer', count: explorerCount, condition: explorerCount >= 2 },
+    { name: 'Foodie', count: foodieCount, condition: foodieCount >= 3 },
+    { name: 'Master Chef', count: masterChefCount, condition: masterChefCount >= 4 },
+    { name: 'Healthy Eater', count: healthyEaterCount, condition: healthyEaterCount >= 1 },
+    { name: 'Food Connoisseur', count: foodConnoisseurCount, condition: foodConnoisseurCount >= 5 },
+  ];
+
+
+
+
 
   const IconButton = ({ source, size, borderRadius, onPress }) => (
     <TouchableOpacity
@@ -43,13 +104,34 @@ const HomeScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
 
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 80,
+          left: 15,
+          padding: 5,
+          backgroundColor: '#EAB8F1', // Light purple background
+          borderRadius: 10, // Slightly increased border radius
+          zIndex: 10, // Ensure it's on top
+          shadowColor: '#000', // Shadow color
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.3, // Shadow opacity
+          shadowRadius: 4, // Shadow blur
+          elevation: 5, // For Android shadow
+        }}
+        onPress={() => { navigation.goBack() }}
+      >
+        <Text style={{ color: '#5C4F9A', fontWeight: 'bold', fontSize: 16 }}>Sign Out</Text>
+      </TouchableOpacity>
+
       <View style={styles.heroTextAnimal}>
         <View style={styles.heroText}>
           <View style={styles.textWrapper}>
             <Text style={styles.goodMorningText}>Good morning</Text>
             <Text style={styles.nameText}>{userDetails.username}!</Text>
-            <Text>Email: {userDetails.email}</Text>
-            <Text>Age: {userDetails.age}</Text>
           </View>
         </View>
         <View style={styles.avatarBg}>
@@ -59,6 +141,7 @@ const HomeScreen = ({ navigation, route }) => {
           />
           <View style={styles.floorBehindThe}></View>
         </View>
+
       </View>
       <View style={styles.floorResponsive}></View>
 
@@ -68,6 +151,52 @@ const HomeScreen = ({ navigation, route }) => {
           <IconButton key={index} {...icon} />
         ))}
       </View>
+      <Text style={{
+        position: 'absolute',
+        top: '70%',
+        zIndex: 1,
+        fontSize: 26, // Slightly larger font size
+        color: '#FF6F61', // A warm coral color for vibrancy
+        fontFamily: 'Arial', // A clean and modern font
+        fontWeight: 'bold',
+        textAlign: 'center',
+        textShadowColor: '#000', // Adding a subtle shadow for contrast
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2
+      }}>
+        Badges
+      </Text>
+
+
+
+
+
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.badgeScroll}
+      >
+        {badges.map((badge, index) =>
+          badge.condition ? (
+            <View key={index} style={styles.badgeContainer}>
+              <Text style={styles.badgeText}>{badge.name}</Text>
+            </View>
+          ) : null
+        )}
+
+
+      </ScrollView>
+
+
+
+
+
+
+
+
+
+
     </View>
   );
 };
@@ -169,6 +298,46 @@ const styles = StyleSheet.create({
     height: "70%",
     aspectRatio: 1,
   },
+  goodMorningText: {
+    fontSize: 34,                     // Larger font size for emphasis
+    color: '#FFB74D',                 // Warm golden color
+    fontWeight: '700',                // Bold font weight
+    fontStyle: 'italic',              // Italic style for a friendly touch
+    textAlign: 'center',              // Center the text
+    textShadowColor: '#000',          // Shadow color
+    textShadowOffset: { width: 1, height: 1 }, // Shadow offset
+    textShadowRadius: 2,              // Shadow radius
+    marginBottom: 10,                 // Spacing below the text
+  },
+  nameText: {
+    fontSize: 30,                     // Larger font size for emphasis
+    color: '#FF4081',                 // Bright pink color
+    fontWeight: '700',                // Bold font weight
+    fontStyle: 'italic',              // Italic style for a friendly touch
+    textAlign: 'center',              // Center the text
+    textShadowColor: '#000',          // Shadow color
+    textShadowOffset: { width: 1, height: 1 }, // Shadow offset
+    textShadowRadius: 2,              // Shadow radius
+  },
+  badgeScroll: {
+    position: 'absolute',
+    top: '75%', // Adjust position as needed
+    zIndex: 1,
+    width: '100%',
+  },
+
+  badgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+
+  badgeText: {
+    fontSize: 18,
+    color: '#FF6F61', // Badge text color
+    marginHorizontal: 10, // Space between badges
+  },
+
 });
 
 export default HomeScreen;

@@ -1,26 +1,26 @@
-// LandingPage.js
-
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 const LandingPage = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Our App</Text>
+      <Text style={styles.title}>Welcome to Bites for Badges</Text>
       <Text style={styles.subtitle}>
-        Join us today to explore our amazing features!
+        Discover New Foods, Earn Rewards, Celebrate Growth!
       </Text>
       <View style={styles.buttonContainer}>
-        <Button
-          title="Register"
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => navigation.navigate("Register")}
-          color="#007BFF"
-        />
-        <Button
-          title="Login"
+        >
+          <Text style={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => navigation.navigate("Login")}
-          color="#28A745"
-        />
+        >
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -31,22 +31,46 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F0F0F0",
+    backgroundColor: "#FFEBEE", // Very light pink background
+    padding: 20,
   },
   title: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: "bold",
     marginBottom: 16,
+    textAlign: "center",
+    color: "#E57373", // Light red for the title
+    textShadowColor: "#FFABAB", // Lighter pink shadow for the title
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 10,
   },
   subtitle: {
-    fontSize: 18,
-    marginBottom: 24,
+    fontSize: 20,
+    marginBottom: 40,
     textAlign: "center",
     paddingHorizontal: 20,
+    color: "#AD1457", // Dark pink for readability
   },
   buttonContainer: {
-    width: "80%",
+    width: "100%",
     marginTop: 16,
+  },
+  button: {
+    backgroundColor: "#EF9A9A", // Light red button color
+    padding: 15,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 15,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.84,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

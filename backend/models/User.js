@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
+    unique: true
   },
   password: {
     type: String,
@@ -47,7 +48,30 @@ const userSchema = new mongoose.Schema({
       DairyCount: 0,
       FatsCount: 0
     }
-  }
+  },
+  badges: {
+    explorer: {
+      type: Number,
+      default: 0, // Default value if not set
+    },
+    foodie: {
+      type: Number,
+      default: 0,
+    },
+    masterChef: {
+      type: Number,
+      default: 0,
+    },
+    healthyEater: {
+      type: Number,
+      default: 0,
+    },
+    foodConnoisseur: {
+      type: Number,
+      default: 0,
+    },
+  },
+
 });
 
 const User = mongoose.model('User', userSchema);

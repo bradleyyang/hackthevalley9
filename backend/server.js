@@ -14,7 +14,7 @@ app.use(express.json());
 
 // Authentication routes
 const authRoutes = require('./routes/auth');
-const {post} = require("axios");
+const { post } = require("axios");
 app.use('/api/auth', authRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
@@ -54,7 +54,7 @@ app.delete('/users', async (req, res) => {
 
 app.get('/users/:username', async (req, res) => {
     try {
-        const user = await User.findOne({username: req.params.username});
+        const user = await User.findOne({ username: req.params.username });
         res.send(user);
     } catch (error) {
         res.status(500).send(error.message);
@@ -79,16 +79,20 @@ app.post('/users/:username', async (req, res) => {
 
 app.post('/users/:username/:food', async (req, res) => {
     try {
-        if(!(req.body.hasOwnProperty('safeFood') && req.body.hasOwnProperty('tags'))) {
+        if (!(req.body.hasOwnProperty('safeFood') && req.body.hasOwnProperty('tags'))) {
             return res.status(400).send('No safeFood or tags provided for food');
         }
         let putResult = await User.findOneAndUpdate(
-            { username: req.params.username }, 
-            { $push: { foods: {
-                name: req.params.food,
-                tags: req.body['tags'],
-                safeFood: req.body['safeFood']
-            } } }, 
+            { username: req.params.username },
+            {
+                $push: {
+                    foods: {
+                        name: req.params.food,
+                        tags: req.body['tags'],
+                        safeFood: req.body['safeFood']
+                    }
+                }
+            },
             { new: true }
         );
         res.send(putResult);
@@ -102,10 +106,14 @@ app.post('/users/:username/:food', async (req, res) => {
 app.delete('/users/:username/:food', async (req, res) => {
     try {
         let deleteResult = await User.findOneAndUpdate(
-            { username: req.params.username }, 
-            { $pull: { foods: {
-                name: req.params.food
-            } } },
+            { username: req.params.username },
+            {
+                $pull: {
+                    foods: {
+                        name: req.params.food
+                    }
+                }
+            },
             { new: true }
         );
 
@@ -128,7 +136,7 @@ app.post('/users/:username/:food/eat', async (req, res) => {
         });
         let postResult = await User.findOneAndUpdate(
             { username: req.params.username },
-            { stats: userInfo['stats']  },
+            { stats: userInfo['stats'] },
             { new: true }
         );
         const newLogEntry = new LogEntry({
@@ -154,5 +162,84 @@ app.get('/users/:username/log', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Error getting log', error });
+    }
+});
+
+
+// Route to count food log entries for a specific user
+app.post('/logEntries/count', async (req, res) => {
+    const { username } = req.body;
+
+    // Check if username is provided
+    if (!username) {
+        return res.status(400).json({ message: 'Username is required' });
+    }
+
+    try {
+        // Count the log entries for the given username
+        const count = await LogEntry.countDocuments({ username });
+        res.json({ count });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
+app.post('/badges', async (req, res) => {
+    try {
+        const { username } = req.body;
+
+        if (!username) {
+            return res.status(400).json({ message: 'Username is required' });
+        }
+
+        // Find the user by username and select only the badges field
+        const user = await User.findOne({ username }).select('badges');
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Send the badges data in the response
+        res.status(200).json(user.badges);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
+app.put('/logfood', async (req, res) => {
+    const { username } = req.body;
+
+    try {
+        // Step 1: Find the user by username
+        const user = await User.findOne({ username: username });
+
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        const index = Math.floor(Math.random() * 5) + 1;
+
+        if (index == 1) {
+            user.badges.explorer += 1;
+        } else if (index == 2) {
+            user.badges.foodConnoisseur += 1;
+        } else if (index == 3) {
+            user.badges.foodie += 1;
+        } else if (index == 4) {
+            user.badges.healthyEater += 1;
+        } else {
+            user.badges.masterChef += 1;
+        }
+
+        // Step 3: Save the updated user
+        await user.save();
+
+        res.status(200).send(user); // Send the updated user data back
+    } catch (error) {
+        res.status(500).send({ message: 'Error updating badges', error });
     }
 });
