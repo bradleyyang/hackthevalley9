@@ -1,9 +1,9 @@
 // App.js
 import React from "react";
 import { StyleSheet, View, StatusBar } from "react-native";
-import HomeScreen from "./HomeScreen";
-import ClosetScreen from "./ClosetScreen";
-import CollectionScreen from "./CollectionScreen";
+import HomeScreen from "./components/HomeScreen";
+import ClosetScreen from "./components/ClosetScreen";
+import CollectionScreen from "./components/CollectionScreen";
 import LogFoodScreen from "./LogFoodScreen";
 
 export default function App() {
