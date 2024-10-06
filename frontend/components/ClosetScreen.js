@@ -1,7 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook
 
 const ClosetScreen = () => {
+  const navigation = useNavigation(); // Initialize navigation
+
   return (
     <View style={styles.closetScreen}>
       {/* Top Menu Bar */}
@@ -46,17 +49,20 @@ const ClosetScreen = () => {
         </View>
       </View>
 
-      {/* Bottom Bar */}
+      {/* Bottom Bar with Cancel Button */}
       <View style={styles.bottomBar}>
-        <View style={styles.buttonBottomBar}>
-          <View style={styles.collectionIcon}></View>
-        </View>
-        <View style={styles.buttonCancel}>
-          <View style={styles.cancelIcon}></View>
-        </View>
-        <View style={styles.buttonCloset}>
-          <View style={styles.closetIcon}></View>
-        </View>
+        {/* Cancel Button */}
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Image
+            source={require("./images/plus.png")}
+            style={styles.cancelImage}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -185,34 +191,12 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     alignSelf: "stretch",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  buttonBottomBar: {
-    width: 48,
-    height: 48,
-    paddingTop: 8,
-    paddingBottom: 8,
-    backgroundColor: "#E4C1F9",
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: "black",
     justifyContent: "center",
     alignItems: "center",
   },
-  collectionIcon: {
-    width: 32,
-    height: 32,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "black",
-  },
-  buttonCancel: {
+  cancelButton: {
     width: 48,
     height: 48,
-    paddingTop: 8,
-    paddingBottom: 8,
     backgroundColor: "#F59393",
     borderRadius: 24,
     borderWidth: 1,
@@ -220,28 +204,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  cancelIcon: {
+  cancelImage: {
     width: 24,
     height: 24,
-    transform: [{ rotate: "-45deg" }],
-    backgroundColor: "white",
-  },
-  buttonCloset: {
-    width: 48,
-    height: 48,
-    paddingTop: 8,
-    paddingBottom: 8,
-    backgroundColor: "#E4C1F9",
-    borderRadius: 32,
-    borderWidth: 1,
-    borderColor: "black",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  closetIcon: {
-    width: 24,
-    height: 24,
-    backgroundColor: "black",
+    transform: [{ rotate: "45deg" }], // Rotate the plus image to form an "X"
   },
 });
 

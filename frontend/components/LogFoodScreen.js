@@ -1,34 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
-import {dbRequest} from "../utils/dbRequest";
-import {Dropdown} from "react-native-element-dropdown";
-
-let data = [];
-const username = 'rayc'
-
+import { dbRequest } from "../utils/dbRequest";
+import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook
 
 function LogFoodScreen() {
-  const [food, setFood] = useState('');
+  const navigation = useNavigation(); // Initialize navigation
+  const [food, setFood] = useState("");
   const onSubmitPress = async (e) => {
     e.preventDefault();
-    let result = await dbRequest('post', `/users/${username}/${food}/eat`);
+    let result = await dbRequest("post", `/users/rayc/${food}/eat`);
     console.log(result);
   };
-  useEffect(() => {
-    async function reloadOptions() {
-      let result = await dbRequest('get', `/users/${username}`);
-      data = result['foods'].map(food => {
-        return {value: food['name']}
-      });
-    }
-    reloadOptions();
-  },[]);
   return (
     <View style={styles.overlay}>
       <View style={styles.content}>
@@ -36,23 +25,31 @@ function LogFoodScreen() {
           <Text style={styles.title}>Log a food!</Text>
         </View>
         <View style={styles.frame29}>
-          <Dropdown style={styles.textInputField} placeholder={'enter a food...'} placeholderTextColor={'#BBBBBB'}
-                    data={data} labelField={'value'} onChange={item => setFood(item)} valueField={'value'}/>
+          <TextInput
+            style={styles.textInputField}
+            onChangeText={setFood}
+            value={food}
+            placeholder={"enter a food..."}
+          />
           <TouchableOpacity style={styles.buttonText} onPress={onSubmitPress}>
             <Text style={styles.buttonLabel}>submit</Text>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.cancelButton}>
-          <View style={styles.cancel}>
-            <View style={styles.vector} />
-          </View>
+        {/* Cancel Button */}
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Image source={require("./images/plus.png")} style={styles.cancel} />
         </TouchableOpacity>
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   overlay: {
@@ -163,6 +160,7 @@ const styles = StyleSheet.create({
   cancel: {
     justifyContent: "center",
     alignItems: "center",
+    transform: [{ rotate: "45deg" }], // Rotate the plus image to form an "X"
   },
   vector: {
     width: 24,

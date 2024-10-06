@@ -1,24 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook
 
 const BadgeCollection = () => {
-  // Define the icons array
-  const icons = [
-    { source: require("./images/collection.png"), size: 48, borderRadius: 24 },
-    { source: require("./images/plus.png"), size: 48, borderRadius: 24 },
-    { source: require("./images/closet.png"), size: 48, borderRadius: 24 },
-  ];
-
-  // IconButton Component
-  const IconButton = ({ source, size, borderRadius }) => (
-    <View
-      style={[styles.iconButton, { width: size, height: size, borderRadius }]}
-    >
-      <View style={styles.iconContainer}>
-        <Image resizeMode="contain" source={source} style={styles.icon} />
-      </View>
-    </View>
-  );
+  const navigation = useNavigation(); // Initialize navigation
 
   return (
     <View style={styles.collection}>
@@ -31,12 +16,15 @@ const BadgeCollection = () => {
         ))}
       </View>
       <View style={styles.bottomBar}>
-        {/* Icon Button Group Rendered Here */}
-        <View style={styles.iconButtonGroup}>
-          {icons.map((icon, index) => (
-            <IconButton key={index} {...icon} />
-          ))}
-        </View>
+        {/* Cancel Button */}
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Image source={require("./images/plus.png")} style={styles.cancel} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -60,7 +48,7 @@ const styles = StyleSheet.create({
   collection: {
     width: 393,
     height: 852,
-    paddingTop: 48,
+    paddingTop: 80,
     paddingBottom: 24,
     backgroundColor: "#F3EEE2",
     flexDirection: "column",
@@ -107,35 +95,30 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     width: 345,
-    justifyContent: "space-between",
+    justifyContent: "center", // Center the cancel button horizontally
     alignItems: "center",
   },
-  iconButtonGroup: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#F3EEE2",
-    width: "100%",
-    paddingBottom: 24,
-  },
-  iconButton: {
-    justifyContent: "center",
-    alignItems: "center",
+  // Styles for the cancel button
+  cancelButton: {
+    width: 48,
+    height: 48,
+    backgroundColor: "#F59393",
+    borderRadius: 24,
     borderWidth: 1,
-    borderColor: "#000",
-    backgroundColor: "#E4C1F9",
-  },
-  iconContainer: {
-    display: "flex",
-    width: 32,
-    alignItems: "center",
-    overflow: "hidden",
+    borderColor: "black",
     justifyContent: "center",
+    alignItems: "center",
   },
-  icon: {
-    width: "70%",
-    height: "70%",
-    aspectRatio: 1,
+  cancel: {
+    justifyContent: "center",
+    alignItems: "center",
+    transform: [{ rotate: "45deg" }], // Rotate the plus image to form an "X"
+  },
+  vector: {
+    width: 24,
+    height: 24,
+    transform: [{ rotate: "-45deg" }],
+    backgroundColor: "white",
   },
   // Badge colors defined here
   badgeColor1: {
