@@ -4,10 +4,10 @@ import { StyleSheet, View, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "./HomeScreen";
-import ClosetScreen from "./ClosetScreen";
-import CollectionScreen from "./CollectionScreen";
-import LogFoodScreen from "./LogFoodScreen";
+import HomeScreen from "./components/HomeScreen";
+import ClosetScreen from "./components/ClosetScreen";
+import CollectionScreen from "./components/CollectionScreen";
+import LogFoodScreen from "./components/LogFoodScreen";
 import Register from "./components/Register";
 
 const Stack = createStackNavigator();
