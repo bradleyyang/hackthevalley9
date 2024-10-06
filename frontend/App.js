@@ -10,8 +10,12 @@ import CollectionScreen from "./components/CollectionScreen";
 import LogFoodScreen from "./components/LogFoodScreen";
 import Register from "./components/Register";
 import BadgeDesc from "./components/BadgeDesc";
+<<<<<<< Updated upstream
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
+=======
+import Congrats from "./components/Congrats";
+>>>>>>> Stashed changes
 
 const Stack = createStackNavigator();
 
@@ -19,7 +23,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
+<<<<<<< Updated upstream
       <Stack.Navigator initialRouteName="LandingPage">
+=======
+      <Stack.Navigator initialRouteName="Congrats">
+>>>>>>> Stashed changes
         <Stack.Screen
           name="Home"
           component={HomeScreen}
@@ -51,6 +59,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+<<<<<<< Updated upstream
           name="LandingPage"
           component={LandingPage}
           options={{ headerShown: false }}
@@ -58,6 +67,10 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={Login}
+=======
+          name="Congrats"
+          component={Congrats}
+>>>>>>> Stashed changes
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
